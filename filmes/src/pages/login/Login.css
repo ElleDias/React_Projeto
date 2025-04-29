@@ -1,0 +1,86 @@
+/* A mãe de todos:  */
+.main_login{
+    display: flex;
+    height: 100vh;
+}
+
+/*Toda a pagina meus crias*/
+
+/* Banner da esquerda: */
+.banner{
+    background-image: url("../../assets/img/fundoLogin.png ");
+    flex: 1;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Form de login da direita: */
+.section_login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    background-color: #cc3f55;
+}
+.section_login img {
+    width: 180px;
+    /* margin-bottom: 40px; */ /*Usar isso aqui somente em caso de usar o metodo comentado do input*/
+}
+
+.form_login{
+    color: white;
+    width: 70%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    /* margin-bottom: 80px; */ /*Usar isso aqui somente em caso de usar o metodo comentado do input*/
+}
+.form_login h1 {
+    text-transform: uppercase;
+    /* text-align: center; */
+    /* margin-bottom: 100px; */ /*Usar isso aqui somente em caso de usar o metodo comentado do input*/
+}
+
+/* input {
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    width: 400px;
+    height: 25px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    border-color: white;
+} */ /*Meus manos, essa parte de codigo eu fiz por conta, ainda funciona e fica bem semelhante ao do Figma, mais o codigo vai seguir de acordo com oque a professora fez, tmj.(esse é o metodo comentado do input)*/
+.campo_input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.campos_login{
+    width: 100%;
+}
+
+.campo_input input {
+    height: 30px;
+    padding: 0px 10px;
+    border-radius: 7px;
+    border: none;
+    outline: none; /*tira a borda de dentro do input(aquela bordinha preta quando clica*/
+    box-shadow: 1px 4px 4px 0px #0000002b ; /*Sombreamento pras suas tags meu cria, tmj viu*/
+    margin-top: 7px; /*É o responsavel pelo espaçamento entre input e label*/
+}
+
+/**RESPONSIVIDADE😑😌**/
+/*Mê dê algumas caracterticas ao partir de um tamanho da tela*/
+@media screen and (max-width: 768px){
+    /*opx ->768px*/
+    .banner{
+        /*Desaparece o banner*/
+        display: none;
+    }
+}

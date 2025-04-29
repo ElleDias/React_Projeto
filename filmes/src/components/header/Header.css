@@ -1,0 +1,40 @@
+/* background-color: #cc3f55; */
+header{
+    background-color: #cc3f55;
+    height: 75px;
+
+    /* Borda: */
+    box-shadow: 1px 4px 4px 0px #00000055;
+    position: relative;
+}
+
+.cabecalho{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.cabecalho img{
+    height: 55px;
+}
+
+.link_header{
+    margin-left: 55px;
+    color: white;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+    .cabecalho img{
+        height: 35px;
+    }
+    .link_header{
+        margin-left: 15px;
+    }
+}
+/*Seletor
+    . = classe
+    # = id
+    tag = tag
+    🦈👟✈️🐊*/

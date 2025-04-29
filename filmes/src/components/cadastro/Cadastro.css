@@ -1,0 +1,64 @@
+.section_cadastro{
+    background-color: #cc3f55;
+    color: white;
+    padding: 50px 0;
+    /* outline: none;*/
+}
+.form_cadastro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_cadastro h1{
+    text-transform: uppercase;
+}
+
+.form_cadastro hr{
+    max-width: 300px;
+    width: 100%;
+    margin-top: 7px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #73061b;
+}
+
+.campos_cadastros{
+    display: flex;
+    margin-top: 60px;
+    gap: 35px;
+    align-items: end;
+
+}
+
+.campo-cad_nome input,
+.campo-cad_genero select{
+   border: none;
+   border-radius: 4px;
+   outline: none;
+   padding: 0 3px;
+   width: 280px;
+   height: 25px;
+   box-shadow: 1px 4px 4px 0px #00000045;
+   /* margin-top: 7px; */
+}
+
+.campo-cad_genero,
+.campo-cad_nome{
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 880px){
+    .campos_cadastros{
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .form_cadastro h1 {
+        font-size: 18px;
+    }
+    
+}
