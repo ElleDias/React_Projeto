@@ -14,7 +14,9 @@ const CadastroGenero = () => {
                     visibilidade="none"
                 />
 
-                <Lista />
+                <Lista
+                 tituloLista ="Generos"
+                nomeGenero="none"/>
             </main>
             <Footer />
         </>

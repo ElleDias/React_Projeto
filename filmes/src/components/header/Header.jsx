@@ -11,11 +11,10 @@ const Header = () => {
                     <img src={Logo} alt="logo da filmoteca" />
                 </Link>
             <nav className="nav_header">
-                <Link className="link_header" to="/Filmes">Filmes</Link>
-                <Link className="link_header" to="/Generos">Gênero</Link>
+                <Link className="link_header" to="/Filme">Filme</Link>
+                <Link className="link_header" to="/Genero">Gênero</Link>
             </nav>  
             </div>
-            {/* mo rolê pra esse negocio vei, seloko*/}
         </header>
     )
 }
