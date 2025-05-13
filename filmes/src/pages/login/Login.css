@@ -1,12 +1,8 @@
-/* A mãe de todos:  */
+
 .main_login{
     display: flex;
     height: 100vh;
 }
-
-/*Toda a pagina meus crias*/
-
-/* Banner da esquerda: */
 .banner{
     background-image: url("../../assets/img/fundoLogin.png ");
     flex: 1;
@@ -15,7 +11,7 @@
     background-repeat: no-repeat;
 }
 
-/* Form de login da direita: */
+
 .section_login{
     display: flex;
     flex-direction: column;
@@ -75,12 +71,9 @@
     margin-top: 7px; /*É o responsavel pelo espaçamento entre input e label*/
 }
 
-/**RESPONSIVIDADE😑😌**/
-/*Mê dê algumas caracterticas ao partir de um tamanho da tela*/
 @media screen and (max-width: 768px){
     /*opx ->768px*/
     .banner{
-        /*Desaparece o banner*/
         display: none;
     }
 }

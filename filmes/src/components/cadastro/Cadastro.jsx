@@ -5,7 +5,7 @@ const Cadastro = (props) => {
         <>
         <section className="section_cadastro">
 
-            <form action="" className="layout_grid form_cadastro">
+            <form onSubmit={props.funcCadastro} className="layout_grid form_cadastro">
                 <h1>{props.tituloCadastro}</h1>
 
                 <hr />
@@ -14,7 +14,14 @@ const Cadastro = (props) => {
 
                     <div className="campo-cad_nome">
                         <label htmlFor="nome">Nome</label>
-                        <input type="text" name="nome" placeholder={`Digite o nome do ${props.placeholder}`} />
+                        <input type="text" name="nome" placeholder={`Digite o nome do ${props.placeholder}`} 
+                        value={props.valorInput}
+                        //ao mudar o input algo acontece
+                        //e = element = elemento
+                        
+                        // Atualiza o valor do input no componente pai sempre que o usuário digita.
+                        onChange={(e) => props.setValorInput(e.target.value)}
+                        />
                     </div>
 
                     <div className="campo-cad_genero" style={{display:props.visibilidade}}>
