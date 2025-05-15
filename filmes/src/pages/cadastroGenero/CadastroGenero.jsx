@@ -1,17 +1,29 @@
-import Header from "../../components/header/Header";
-import Footer from "../../components/footer/Footer";
-import Cadastro from "../../components/cadastro/Cadastro";
-import Lista from "../../components/lista/Lista";
-import { use, useEffect, useState } from "react";
-import api from "../../services/Services"
+//importando o useEffect e o useStates
+import { useState, useEffect } from "react";
+import api from "../../services/Services";
 
 //importando o sweetalert
 import Swal from 'sweetalert2'
 
+//importação de componenets
+import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
+import Cadastro from "../../components/cadastro/Cadastro";
+import Lista from "../../components/lista/Lista";
+
 const CadastroGenero = () => {
+
     const [genero, setGenero] = useState("");
+    const [listaGenero, setListaGenero] = useState([]);
+    const [excluirGenero, setExcluirGenero] = useState();
+    const [atualizarGenero, setAtualizarGenero] = useState();
+    const alterarGenero = (novoGenero) => { setAtualizarGenero(novoGenero); };
+    const [editandoId, setEditandoId] = useState(null);
+    const [novoNome, setNovoNome] = useState("");
+
 
     function alerta(icone, mensagem) {
+        //------------------------INICIO-DO-ALERTA------------------------------//
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -27,67 +39,127 @@ const CadastroGenero = () => {
             icon: icone,
             title: mensagem
         });
+
+        //------------------------FIM-DO-ALERTA---------------------------------//
+
     }
+
     async function cadastrarGenero(evt) {
         evt.preventDefault();
         //verificar se o input esta vindo vazio
-        //-------------------------------------------------IF---------------------------------------------------------------//
-
+        // trim: apaga os espaços
         if (genero.trim() != "") {
-            alert("O campo precisa estar preenchido")
-            //try => tentar(o esperado)
-            //catch => lanca a excecao
-            //------------------------------------------------TRY---------------------------------------------------------------//
-            try{
+            try {
                 //cadastrar um genero: post
                 await api.post("genero", { nome: genero });
-                alerta("success", "Cadastro realizado com sucesso")
+                alerta("sucess", "Cadastro realizado com sucesso!")
                 setGenero("");
-            }
-            //------------------------------------------------CATCH---------------------------------------------------------------//
-            catch (error) {
-                alerta("error", "erro! Entre em contato com o suporte")
+
+            } catch (error) {
+                alerta("error", "Erro! Entre em contato com o suporte!")
                 console.log(error);
             }
-            //------------------------------------------------ELSE---------------------------------------------------------------//
-        } 
-        else {
-            alerta("error", "Erro! Preencha o campo");
+        } else {
+            alerta("error", "Preencha o campo!")
+        }
+        //try => tentar(o esperado)
+        //catch => pega a exceção
+    }
+
+    //sincrono => Acontece simultaneamente
+    //assincrono => esperar algo acontecer/ uma resposta
+
+    async function listarGenero() {
+        try {
+
+            const resposta = await api.get("genero");
+            //console.log(resposta.data);
+            setListaGenero(resposta.data);
+            //console.log(resposta.data[3]);
+            //colocou so o .data para obter apenas os objetos e o [3] para obter o objeto 3 da lista do sql
+
+        } catch (error) {
+            console.log(error);
         }
     }
-        //teste
-    //useEffect <funcao> <dependencia>
 
+    async function ExcluirGenero(generoId) {
+        try {
+
+            await api.delete(`genero/${generoId.idGenero}`);
+            //((`genero/${idGenero})  Isso é template string, ou seja, permite inserir variáveis dentro da string.
+            //console.log(resposta.data);
+            alerta("success", "Genero deletado com sucesso!");
+            listarGenero();
+
+        } catch (error) {
+            console.log(error);
+            alerta("error", "Erro ao deletar o genero. Entre em contato com o suporte");
+        }
+    }
+
+   async function AtualizarGenero() {
+    try {
+        await api.put(`genero/${editandoId}`, { nome: novoNome });
+        alerta("success", "Gênero atualizado com sucesso!");
+        setEditandoId(null);  // limpa o ID editando
+        setNovoNome("");      // limpa o campo
+        listarGenero();       // atualiza a lista
+    } catch (error) {
+        console.log(error);
+        alerta("error", "Erro ao atualizar o gênero. Entre em contato com o suporte.");
+    }
+}
+
+
+
+
+
+    //TESTE: validar o genero
+    // useEffect(() => {
+    //     console.log(genero);
+    // },[genero]);
+    //fim do teste
+
+    //assim que a pagina redenrizar, o metodo listarGenero() sera chamado
     useEffect(() => {
-        console.log(genero);
-    }, [genero]);
+        listarGenero();
+    }, [listaGenero]);
+    //o conchete vazio serve para quando vc recarregar a pagina aparecer esse alert
+    //[] array sem dependencia
+    // o array comeca no 0
+    //[listagenero] => array com dependencia, quando tem alteracao na minha dependencia ou sofrer alteracao vai acontecer um efeito
 
-    //-------------------------------------------------RETURN---------------------------------------------------------------//
     return (
         <>
             <Header />
             <main>
-                <Cadastro tituloCadastro="cadastro de Genero"
+                <Cadastro tituloCadastro="Cadastro de Gênero"
                     visibilidade="none"
-                    placeholder="Genero"
-                    //Atribuindo a funcao:
+                    placeholder="gênero"
+
+                    //atribuindo a função:
                     funcCadastro={cadastrarGenero}
-                    //Atribuindo o valor ao input:
+                    //atribuindo o valor do input:
                     valorInput={genero}
-                    //Atribuindo a funcao que atualiza meu genero:
+                    //atibuindo a função que atualiza o meu genero
                     setValorInput={setGenero}
                 />
+
                 <Lista
-                    tituloLista="Lista de Genero"
+                    tituloLista="Lista de Gêneros"
+                    nomeGenero="none"
                     visibilidade="none"
+                    //atribuir para lista, o meu estado atual
+
+                    lista={listaGenero}
+                    funcAtualizar={AtualizarGenero}
+                    funcExcluir={ExcluirGenero}
                 />
-
-
             </main>
             <Footer />
         </>
     )
 }
-
 
 export default CadastroGenero;
