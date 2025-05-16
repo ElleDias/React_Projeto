@@ -41,7 +41,43 @@ const CadastroGenero = () => {
         });
 
         //------------------------FIM-DO-ALERTA---------------------------------//
+    }
 
+    function confirmarExclusao(genero) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                ExcluirGenero(genero); // chama a função que exclui mesmo
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        });
     }
 
     async function cadastrarGenero(evt) {
@@ -98,22 +134,18 @@ const CadastroGenero = () => {
         }
     }
 
-   async function AtualizarGenero() {
-    try {
-        await api.put(`genero/${editandoId}`, { nome: novoNome });
-        alerta("success", "Gênero atualizado com sucesso!");
-        setEditandoId(null);  // limpa o ID editando
-        setNovoNome("");      // limpa o campo
-        listarGenero();       // atualiza a lista
-    } catch (error) {
-        console.log(error);
-        alerta("error", "Erro ao atualizar o gênero. Entre em contato com o suporte.");
+    async function AtualizarGenero() {
+        try {
+            await api.put(`genero/${editandoId}`, { nome: novoNome });
+            alerta("success", "Gênero atualizado com sucesso!");
+            setEditandoId(null);  // limpa o ID editando
+            setNovoNome("");      // limpa o campo
+            listarGenero();       // atualiza a lista
+        } catch (error) {
+            console.log(error);
+            alerta("error", "Erro ao atualizar o gênero. Entre em contato com o suporte.");
+        }
     }
-}
-
-
-
-
 
     //TESTE: validar o genero
     // useEffect(() => {
@@ -147,15 +179,18 @@ const CadastroGenero = () => {
                 />
 
                 <Lista
-                    tituloLista="Lista de Gêneros"
+                     tituloLista="Lista de Gêneros"
                     nomeGenero="none"
                     visibilidade="none"
-                    //atribuir para lista, o meu estado atual
-
                     lista={listaGenero}
                     funcAtualizar={AtualizarGenero}
-                    funcExcluir={ExcluirGenero}
+                    funcConfirmarExclusao={confirmarExclusao}                           
+                    editandoId={editandoId}
+                    setEditandoId={setEditandoId}
+                    novoNome={novoNome}
+                    setNovoNome={setNovoNome}
                 />
+
             </main>
             <Footer />
         </>
