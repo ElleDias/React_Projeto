@@ -19,30 +19,25 @@ const Lista = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {props.lista?.length ? props.lista.map(item => (
-                                <tr className="item_lista" key={item.idGenero}>
-                                    <td>
-                                        {props.editandoId === item.idGenero ? (
-                                            <input value={props.novoNome} onChange={e => props.setNovoNome(e.target.value)} />
-                                        ) : item.nome}
-                                    </td>
-                                    <td style={{ display: props.visibilidade }}>Comédia</td>
-                                    <td>
-                                        {props.editandoId === item.idGenero ? (
-                                            <button onClick={props.funcAtualizar}>Salvar</button>
-                                        ) : (
-                                            <img src={Editar} alt="Editar" style={{ cursor: "pointer" }} onClick={() => {
-                                                props.setEditandoId(item.idGenero);
-                                                props.setNovoNome(item.nome);
-                                            }} />
-                                        )}
-                                    </td>
-                                    <td>
-                                        <img src={Excluir} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.onExcluir(item.idGenero)} />
-                                    </td>
+                            {props.lista && props.lista.length > 0 ? (
+                                //vamos mapear os itens da lista
+                                props.lista.map((item) => (
+                                    //dando um identificador para cada item da lista
+                                    <tr className="item_lista" key={item.idGenero}>
+                                        <td data-cell="Nome">{item.nome}</td>
+                                        <td style={{ display: props.visibilidade }}>Comédia</td>
+                                        <td data-cell="Editar">
+                                            <img src={Editar} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.funcEditar(item)} />
+                                        </td>
+                                        <td data-cell="Excluir">
+                                            <img src={Excluir} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.funcExcluir(item.idGenero)} />
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4">Nenhum gênero foi encontrado.</td>
                                 </tr>
-                            )) : (
-                                <tr><td colSpan="4">Nenhum gênero foi encontrado.</td></tr>
                             )}
                         </tbody>
 
