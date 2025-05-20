@@ -38,7 +38,7 @@ const Lista = (props) => {
                                         )}
                                     </td>
                                     <td>
-                                        <img src={Excluir} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.funcConfirmarExclusao(item)} />
+                                        <img src={Excluir} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.onExcluir(item.idGenero)} />
                                     </td>
                                 </tr>
                             )) : (

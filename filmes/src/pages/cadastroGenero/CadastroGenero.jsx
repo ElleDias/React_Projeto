@@ -13,16 +13,25 @@ import Lista from "../../components/lista/Lista";
 
 const CadastroGenero = () => {
 
+
+    //só usamos o useStates quando precisamos guardar uma informação que muda e o react precisa acompanhar
     const [genero, setGenero] = useState("");
     const [listaGenero, setListaGenero] = useState([]);
-    const [excluirGenero, setExcluirGenero] = useState();
     const [atualizarGenero, setAtualizarGenero] = useState();
-    const alterarGenero = (novoGenero) => { setAtualizarGenero(novoGenero); };
+
+    // Função que altera o gênero selecionado, recebendo o novo gênero como parâmetro
+    const alterarGenero = (novoGenero) => {
+        setAtualizarGenero(novoGenero); // Atualiza o estado com o novo gênero
+    };
+
+    // Estado que guarda o ID do item que está sendo editado atualmente
     const [editandoId, setEditandoId] = useState(null);
+
+    // Estado que armazena o novo nome digitado pelo usuário durante a edição
     const [novoNome, setNovoNome] = useState("");
 
 
-    function alerta(icone, mensagem) {
+    function alertar(icone, mensagem) {
         //------------------------INICIO-DO-ALERTA------------------------------//
         const Toast = Swal.mixin({
             toast: true,
@@ -43,42 +52,6 @@ const CadastroGenero = () => {
         //------------------------FIM-DO-ALERTA---------------------------------//
     }
 
-    function confirmarExclusao(genero) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
-            },
-            buttonsStyling: false
-        });
-
-        swalWithBootstrapButtons.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                ExcluirGenero(genero); // chama a função que exclui mesmo
-                swalWithBootstrapButtons.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            } else if (
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                )
-            }
-        });
-    }
 
     async function cadastrarGenero(evt) {
         evt.preventDefault();
@@ -88,15 +61,15 @@ const CadastroGenero = () => {
             try {
                 //cadastrar um genero: post
                 await api.post("genero", { nome: genero });
-                alerta("sucess", "Cadastro realizado com sucesso!")
+                alertar("sucess", "Cadastro realizado com sucesso!")
                 setGenero("");
-
+                listarGenero();
             } catch (error) {
-                alerta("error", "Erro! Entre em contato com o suporte!")
+                alertar("error", "Erro! Entre em contato com o suporte!")
                 console.log(error);
             }
         } else {
-            alerta("error", "Preencha o campo!")
+            alertar("error", "Preencha o campo!")
         }
         //try => tentar(o esperado)
         //catch => pega a exceção
@@ -119,31 +92,65 @@ const CadastroGenero = () => {
         }
     }
 
-    async function ExcluirGenero(generoId) {
-        try {
+    async function ExcluirGenero(id) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: true
+        });
 
-            await api.delete(`genero/${generoId.idGenero}`);
-            //((`genero/${idGenero})  Isso é template string, ou seja, permite inserir variáveis dentro da string.
-            //console.log(resposta.data);
-            alerta("success", "Genero deletado com sucesso!");
-            listarGenero();
+        swalWithBootstrapButtons.fire({
+            title: "Você tem certeza?",
+            text: "Você não poderá reverter isso.!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, Deletar isso!",
+            cancelButtonText: "Nao, Cancelar!",
+            reverseButtons: true
+        }).then(async(result) => {
+            if (result.isConfirmed) {
+                try {
+                    await api.delete(`genero/${id.idGenero}`);
+                    //((`genero/${idGenero})  Isso é template string, ou seja, permite inserir variáveis dentro da string.
+                    //console.log(resposta.data);
+                    //alertar("success", "Genero deletado com sucesso!");
+                    ExcluirGenero(genero); // chama a função que exclui mesmo
+                    swalWithBootstrapButtons.fire(
+                        'Deletado!',
+                        'Seu arquivo foi excluído.',
+                        'success'
+                    )
+                    listarGenero();
 
-        } catch (error) {
-            console.log(error);
-            alerta("error", "Erro ao deletar o genero. Entre em contato com o suporte");
-        }
+                } catch (error) {
+                    console.log(error);
+                   // alertar("error", "Erro ao deletar o genero. Entre em contato com o suporte");
+                }
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'Seu arquivo imaginário está seguro :)',
+                    'error'
+                )
+            }
+        });
+
     }
 
     async function AtualizarGenero() {
         try {
             await api.put(`genero/${editandoId}`, { nome: novoNome });
-            alerta("success", "Gênero atualizado com sucesso!");
+            alertar("success", "Gênero atualizado com sucesso!");
             setEditandoId(null);  // limpa o ID editando
             setNovoNome("");      // limpa o campo
             listarGenero();       // atualiza a lista
         } catch (error) {
             console.log(error);
-            alerta("error", "Erro ao atualizar o gênero. Entre em contato com o suporte.");
+            alertar("error", "Erro ao atualizar o gênero. Entre em contato com o suporte.");
         }
     }
 
@@ -179,16 +186,16 @@ const CadastroGenero = () => {
                 />
 
                 <Lista
-                     tituloLista="Lista de Gêneros"
+                    tituloLista="Lista de Gêneros"
                     nomeGenero="none"
                     visibilidade="none"
                     lista={listaGenero}
                     funcAtualizar={AtualizarGenero}
-                    funcConfirmarExclusao={confirmarExclusao}                           
                     editandoId={editandoId}
                     setEditandoId={setEditandoId}
                     novoNome={novoNome}
                     setNovoNome={setNovoNome}
+                    onExcluir={ExcluirGenero}
                 />
 
             </main>
@@ -196,5 +203,4 @@ const CadastroGenero = () => {
         </>
     )
 }
-
 export default CadastroGenero;
