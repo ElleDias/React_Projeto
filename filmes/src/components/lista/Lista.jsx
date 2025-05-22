@@ -23,9 +23,13 @@ const Lista = (props) => {
                                 //vamos mapear os itens da lista
                                 props.lista.map((item) => (
                                     //dando um identificador para cada item da lista
-                                    <tr className="item_lista" key={item.idGenero}>
-                                        <td data-cell="Nome">{item.nome}</td>
-                                        <td style={{ display: props.visibilidade }}>Comédia</td>
+                                    <tr className="item_lista" key={props.tipoLista == "genero" ? item.idGenero : item.idFilme}>
+                                        <td data-cell="Nome">
+                                            {props.tipoLista == "genero" ? item.nome : item.titulo}
+                                        </td>
+                                        <td data-cell="Genero" style={{ display: props.visibilidade }}>
+                                            {item.genero?.nome}
+                                        </td>
                                         <td data-cell="Editar">
                                             <img src={Editar} alt="Excluir" style={{ cursor: "pointer" }} onClick={() => props.funcEditar(item)} />
                                         </td>

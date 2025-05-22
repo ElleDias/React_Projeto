@@ -182,9 +182,13 @@ async function ExcluirGenero(idGenero) {
 
                 <Lista
                     tituloLista="Lista de Gêneros"
-                    nomeGenero="none"
                     visibilidade="none"
+
+                    nomeGenero="none"                   
                     lista={listaGenero}
+                    
+                    tipoLista ="genero"
+
                     funcExcluir={ExcluirGenero}
                     funcEditar={EditarGenero}
                 />

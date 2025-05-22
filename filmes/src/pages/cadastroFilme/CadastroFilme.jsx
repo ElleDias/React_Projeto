@@ -12,9 +12,13 @@ import Cadastro from "../../components/cadastro/Cadastro";
 import Lista from "../../components/lista/Lista";
 const CadastroFilme = () => {
 
-  const [listaGenero, setListaGenero] = useState("");
+  const [listaGenero, setListaGenero] = useState([]);
   const [genero, setGenero] = useState("");
   const [filme, setFilme] = useState("");
+ const [listaFilme, setListaFilme] = useState([]);
+
+
+  //no const nao pode colocar metodo (metodo é verbo) ou seja sempre escrever sem ser em verbo.
 
   // Função de alerta
   const alertar = (icon, title) => {
@@ -54,8 +58,19 @@ const CadastroFilme = () => {
     }
   }
 
+  async function listarFilme() {
+    try {
+      const resposta = await api.get("filme");
+      setListaFilme(resposta.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   useEffect(() => {
     listarGenero();
+    listarFilme();
   }, []);
 
   return (
@@ -65,7 +80,8 @@ const CadastroFilme = () => {
         <Cadastro
           tituloCadastro="Cadastro de Filme"
           placeholder="Filme"
-          lista={listaGenero}
+          
+          lista = {listaGenero}
           funcCadastro={cadastrarGenero}
           valorInput={filme}
           setValorInput={setFilme}
@@ -73,8 +89,11 @@ const CadastroFilme = () => {
           setValorSelect={setGenero}
         />
         <Lista
+          tipoLista="filme"
           tituloLista="Filmes"
-          nomeGenero="Gênero"
+
+          lista={listaFilme}
+          
         />
       </main>
       <Footer />
